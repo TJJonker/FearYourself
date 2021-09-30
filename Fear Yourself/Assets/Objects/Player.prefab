@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33607dc1ccdbf48499d7536050a724f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 4000
   Drag: 0.98
   jumpheight: 2.5
   EnvironmentLayer:
