@@ -5,6 +5,7 @@ public class GhostBehaviour : MonoBehaviour
 {
     private TrailRenderer trail;
     private SpriteRenderer spriteRenderer;
+    public LevelManager levelManager { private get; set; }
 
     public List<Vector2> Path {private get; set;}
 
@@ -68,6 +69,10 @@ public class GhostBehaviour : MonoBehaviour
     private void DestroySequence()
     {
         DestroyTimer += Time.deltaTime;
-        if(DestroyTimer > trail.time) Destroy(gameObject); 
+        if (DestroyTimer > trail.time)
+        {
+            levelManager.RemoveGhost(gameObject);
+            Destroy(gameObject);
+        }
     }
 }

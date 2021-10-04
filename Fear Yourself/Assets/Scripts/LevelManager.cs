@@ -38,6 +38,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(ghosts.Count);
         if (Input.GetKeyDown(KeyCode.P)) Dead();
 
         // TODO: Cleanup this messy shit
@@ -77,6 +78,7 @@ public class LevelManager : MonoBehaviour
                 var ghost = Instantiate(Ghost);
                 ghost.GetComponent<GhostBehaviour>().Path = WalkedPaths[i];
                 ghost.GetComponent<GhostBehaviour>().Forward = false;
+                ghost.GetComponent<GhostBehaviour>().levelManager = this;
                 ghosts.Add(ghost);
             }
         }
@@ -136,14 +138,15 @@ public class LevelManager : MonoBehaviour
     private void CheckDeathSequence()
     {
         // TODO: Please change this
-        
+
+        var ready = true;
         // Removing Ghosts when they're dead
         for (int i = ghosts.Count - 1; i >= 0; i--)
-            if (ghosts[i].GetComponent<GhostBehaviour>().WillDestroy)
-                ghosts.Remove(ghosts[i]);
+            if (!ghosts[i].GetComponent<GhostBehaviour>().WillDestroy)
+                ready = false;
 
 
-        if (ghosts.Count == 0)
+        if (ready)
         {
             // Resetting level
             ResetLevel();
@@ -165,6 +168,11 @@ public class LevelManager : MonoBehaviour
         SpawnPlayer(StartPoints[RunNumber].position);
         for (int i = 0; i < StartPoints.Length; i++)
             WalkedPaths[i] = new List<Vector2>();
+    }
+
+    public void RemoveGhost(GameObject gameObject)
+    {
+        ghosts.Remove(gameObject);
     }
 
     private void KillAllGhosts()
