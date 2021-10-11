@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
     // Ghost spawning
     private List<GameObject> ghosts = new List<GameObject>();
     float GhostSpawnTimer = 0;
-    [SerializeField] private int GhostSpawnInterval = 150;
+    [SerializeField] private int GhostSpawnInterval = 2;
 
     // Trail information
     private List<List<Vector2>> WalkedPaths = new List<List<Vector2>>();
