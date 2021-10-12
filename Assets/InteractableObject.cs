@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
-    [SerializeField] private LayerMask PlayerLayer;
+    [SerializeField] private string PlayerTag = "Player";
     [SerializeField] private Canvas canvas;
     [SerializeField] private Vector3 offset;
 
@@ -14,11 +14,13 @@ public class InteractableObject : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         // Enable showing E button to enter portal
-        canvas.GetComponent<UIButton>().Show();
+        if(collision.gameObject.tag == PlayerTag)
+            canvas.GetComponent<UIButton>().Show();
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        canvas.GetComponent<UIButton>().Hide();
+        if (collision.gameObject.tag == PlayerTag)
+            canvas.GetComponent<UIButton>().Hide();
     }
 }

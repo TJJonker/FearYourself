@@ -315,7 +315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   canvas: {fileID: 1985498148}
   offset: {x: 0, y: 1.5, z: 0}
 --- !u!50 &116277225
