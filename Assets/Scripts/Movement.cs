@@ -82,7 +82,6 @@ public class Movement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Obstacle")
             DeathCollision = true;
-            
     }
 
 }

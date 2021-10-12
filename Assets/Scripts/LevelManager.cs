@@ -38,7 +38,6 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(ghosts.Count);
         if (Input.GetKeyDown(KeyCode.P)) Dead();
 
         // TODO: Cleanup this messy shit
