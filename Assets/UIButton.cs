@@ -25,16 +25,12 @@ public class UIButton : MonoBehaviour
     private IEnumerator Appear()
     {
         frontImageColor = frontImage.color;
-        if (frontImageColor.a < maxAlpha)
+        while (frontImageColor.a < maxAlpha)
         {
             frontImageColor.a += alphaIncrement;
             frontImage.color = frontImageColor;
-            yield return null;
-        }
-        else
-        {
-            frontImageColor.a = maxAlpha;
-            frontImage.color = frontImageColor;
+            Debug.Log(frontImageColor.a);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -42,7 +38,8 @@ public class UIButton : MonoBehaviour
     {
         frontButton.GetComponent<Image>().color = new Color(255, 255, 255, 0);
     }
-
+    
+    // TODO: Add a cache and null check
     public void Show() => StartCoroutine(Shw());
 
     public IEnumerator Shw()
