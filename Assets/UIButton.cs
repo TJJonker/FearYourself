@@ -16,6 +16,8 @@ public class UIButton : MonoBehaviour
     [Range(0, 1)] [SerializeField] private float maxAlpha;
     [SerializeField] private float alphaIncrement;
 
+    private Coroutine showHide;
+
     private void Start()
     {
         frontImage = frontButton.GetComponent<Image>();
@@ -44,10 +46,18 @@ public class UIButton : MonoBehaviour
         }
     }
 
-    public void Hide() => Disappearing = StartCoroutine(Hde());
-    
+    public void Hide()
+    {
+        StopAllCoroutines();
+        showHide = StartCoroutine(Hde());
+    }
+
     // TODO: Add a cache and null check
-    public void Show() => Showing = StartCoroutine(Shw());
+    public void Show()
+    {
+        StopAllCoroutines();
+        showHide = StartCoroutine(Shw());
+    }
    
     public IEnumerator Hde()
     {

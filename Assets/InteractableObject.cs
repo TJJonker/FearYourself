@@ -6,7 +6,7 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private Vector3 offset;
 
-    public void Update()
+    public void Start()
     {
         canvas.gameObject.transform.position = transform.position + offset;
     }
