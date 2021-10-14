@@ -17,7 +17,6 @@ public class SinMovement : MonoBehaviour
     {
         var sin = Mathf.Sin(sinX) * amplitude;
         transform.localPosition = position + sin * direction;
-        Debug.Log(position);
         sinX += sinIncrement;
     }
 }

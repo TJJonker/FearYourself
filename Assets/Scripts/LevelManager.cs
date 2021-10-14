@@ -4,11 +4,19 @@ using System;
 
 public class LevelManager : MonoBehaviour
 {
-
+    [Header("Prefabs")]
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject Ghost;
+
+    [Header("Start Points")]
     [SerializeField] private Transform[] StartPoints;
+
+    [Header("Overlays")]
     [SerializeField] private GameObject DeadOverlay;
+    [SerializeField] private GameObject WinFade;
+    
+    [Header("Ghost Settings")]
+    [SerializeField] private int GhostSpawnInterval = 2;
 
     private GameObject player;
     private int RunNumber = 0;
@@ -21,7 +29,6 @@ public class LevelManager : MonoBehaviour
     // Ghost spawning
     private List<GameObject> ghosts = new List<GameObject>();
     float GhostSpawnTimer = 0;
-    [SerializeField] private int GhostSpawnInterval = 2;
 
     // Trail information
     private List<List<Vector2>> WalkedPaths = new List<List<Vector2>>();
