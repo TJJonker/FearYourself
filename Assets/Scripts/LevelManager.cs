@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
@@ -13,18 +14,21 @@ public class LevelManager : MonoBehaviour
 
     [Header("Overlays")]
     [SerializeField] private GameObject DeadOverlay;
-    [SerializeField] private GameObject WinFade;
-    
+        
     [Header("Ghost Settings")]
     [SerializeField] private int GhostSpawnInterval = 2;
 
+    [Header("Winning")]
+    [SerializeField] private float Increment = .03f;
+
+    // Playing states
+    private enum States { Dead, Alive, Finished }
+    private States State = States.Alive;
+
+
     private GameObject player;
     private int RunNumber = 0;
-
     private float StepInterval = .005f;
-
-    private bool isDead = false;
-
 
     // Ghost spawning
     private List<GameObject> ghosts = new List<GameObject>();
@@ -45,15 +49,15 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) Dead();
-
-        // TODO: Cleanup this messy shit
-        if (isDead) CheckDeathSequence();
-
-        if (isDead) return;
-        SavePlayerPath();
-        SpawnPathGhosts();
-        CheckForPlayerColission();
+        if(State == States.Alive)
+        {
+            if (Input.GetKeyDown(KeyCode.P)) StartCoroutine(CompleteLevel());
+            SavePlayerPath();
+            SpawnPathGhosts();
+            CheckForPlayerColission();
+        }
+        if(State == States.Dead) CheckDeathSequence();
+        if (State == States.Finished) return;
     }
 
     private void CheckForPlayerColission()
@@ -105,14 +109,8 @@ public class LevelManager : MonoBehaviour
     public void Finish()
     {
         RunNumber += 1;
-        if (RunNumber < StartPoints.Length)
-        {
-            SpawnPlayer(StartPoints[RunNumber].position);
-        }
-        else
-        {
-            ResetLevel();
-        }
+        if (RunNumber < StartPoints.Length) SpawnPlayer(StartPoints[RunNumber].position);
+        else StartCoroutine(CompleteLevel());
     }
 
     public void Dead()
@@ -121,7 +119,7 @@ public class LevelManager : MonoBehaviour
         DeadOverlay.GetComponent<DeadOverlay>().EnableDead();
 
         // Set LevelManager to Dead
-        isDead = true;
+        State = States.Dead;
 
         // Send all ghosts back to endpoint if they exist
         foreach (GameObject g in ghosts)
@@ -179,10 +177,7 @@ public class LevelManager : MonoBehaviour
             WalkedPaths[i] = new List<Vector2>();
     }
 
-    public void RemoveGhost(GameObject gameObject)
-    {
-        ghosts.Remove(gameObject);
-    }
+    public void RemoveGhost(GameObject gameObject) => ghosts.Remove(gameObject);
 
     private void KillAllGhosts()
     {
@@ -192,4 +187,50 @@ public class LevelManager : MonoBehaviour
             ghosts.Remove(ghosts[i]);
         }
     }
+
+    // Completing level
+    private IEnumerator CompleteLevel()
+    {
+        // Change GameState
+        State = States.Finished;
+        // Destroy player
+        Destroy(player);
+        // Reset noise overlay to a opcatiy of 0
+        SetMaterialOpacity(TVNoise, 0);
+        
+        // Fade out
+        yield return StartCoroutine(FadeOutShader(TVNoise));
+        yield return StartCoroutine(FadeOutSprite(WinFade));
+    }
+
+    private IEnumerator FadeOutSprite(GameObject gameObject)
+    {
+        var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        var spriteColor = spriteRenderer.color;
+        while(spriteColor.a < 1)
+        {
+            spriteColor.a += Increment;
+            spriteRenderer.color = spriteColor;
+            yield return null;
+        }
+    }
+
+    private IEnumerator FadeOutShader(Material material)
+    {
+        var opacityName = material.shader.GetPropertyName(0);
+        var opacity = material.GetFloat(opacityName);
+        while (opacity < 1)
+        {
+            opacity += Increment;
+            material.SetFloat(opacityName, opacity);
+            yield return null;
+        }
+    }
+
+    private void SetMaterialOpacity(Material material, float opacity) 
+    {
+        opacity = Mathf.Clamp(opacity, 0, 1);
+        material.SetFloat(material.shader.GetPropertyName(0), opacity);
+    }
+
 }
