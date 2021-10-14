@@ -5,113 +5,55 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
-    [Header("Prefabs")]
-    [SerializeField] private GameObject Player;
-    [SerializeField] private GameObject Ghost;
 
-    [Header("Start Points")]
-    [SerializeField] private Transform[] StartPoints;
+
 
     [Header("Overlays")]
     [SerializeField] private GameObject DeadOverlay;
         
-    [Header("Ghost Settings")]
-    [SerializeField] private int GhostSpawnInterval = 2;
+
 
     [Header("Winning")]
     [SerializeField] private float Increment = .03f;
 
     // Playing states
-    private enum States { Dead, Alive, Finished }
-    private States State = States.Alive;
 
 
-    private GameObject player;
-    private int RunNumber = 0;
-    private float StepInterval = .005f;
+
+
+
+
 
     // Ghost spawning
     private List<GameObject> ghosts = new List<GameObject>();
     float GhostSpawnTimer = 0;
 
-    // Trail information
-    private List<List<Vector2>> WalkedPaths = new List<List<Vector2>>();
+
 
     private void Start()
     {
-        // Instantiate the list
-        for (int i = 0; i < StartPoints.Length; i++)
-            WalkedPaths.Add(new List<Vector2>());
 
-        // Spawn the player in the level
-        SpawnPlayer(StartPoints[RunNumber].position);
+
+
     }
 
     private void Update()
     {
-        if(State == States.Alive)
-        {
-            if (Input.GetKeyDown(KeyCode.P)) StartCoroutine(CompleteLevel());
-            SavePlayerPath();
-            SpawnPathGhosts();
-            CheckForPlayerColission();
-        }
         if(State == States.Dead) CheckDeathSequence();
         if (State == States.Finished) return;
     }
 
-    private void CheckForPlayerColission()
-    {
-        if (player.GetComponent<Movement>().DeathCollision)
-            Dead();
-    }
 
 
-    // Previous path ghost
-    private void SavePlayerPath()
-    {
-        if (WalkedPaths[RunNumber].Count < 1
-            || Vector2.Distance(player.transform.position, WalkedPaths[RunNumber][WalkedPaths[RunNumber].Count - 1]) > StepInterval)
-        {
-            WalkedPaths[RunNumber].Add(player.transform.position);
-        }
-    }
-
-    private void SpawnPathGhosts()
-    {
-        if (RunNumber > 0 && GhostSpawnTimer > GhostSpawnInterval)
-        {
-            // Reset Spawn Timer
-            GhostSpawnTimer = 0;
-            // Check how many ghost to spawn
-            for (int i = 0; i < RunNumber; i++)
-            {
-                // Spawn ghosts and give them a path
-                var ghost = Instantiate(Ghost);
-                ghost.GetComponent<GhostBehaviour>().Path = WalkedPaths[i];
-                ghost.GetComponent<GhostBehaviour>().Forward = false;
-                ghost.GetComponent<GhostBehaviour>().levelManager = this;
-                ghosts.Add(ghost);
-            }
-        }
-        GhostSpawnTimer += Time.deltaTime;
-    }
 
 
-    // LevelManagement
-    private void SpawnPlayer(Vector2 position)
-    {
-        if (player == null)
-            player = Instantiate(Player) as GameObject;
-        player.transform.position = position;
-    }
 
-    public void Finish()
-    {
-        RunNumber += 1;
-        if (RunNumber < StartPoints.Length) SpawnPlayer(StartPoints[RunNumber].position);
-        else StartCoroutine(CompleteLevel());
-    }
+
+
+
+
+
+
 
     public void Dead()
     {

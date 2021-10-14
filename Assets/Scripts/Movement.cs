@@ -67,15 +67,8 @@ public class Movement : MonoBehaviour
         RaycastHit2D hit1 = Physics2D.Raycast(startPos1, Vector2.down, GROUND_DISTANCE, EnvironmentLayer);
         RaycastHit2D hit2 = Physics2D.Raycast(startPos2, Vector2.down, GROUND_DISTANCE, EnvironmentLayer);
         // Return true if ground hit, else false
-        if(hit1.collider != null || hit2.collider) return true;
+        if(hit1.collider || hit2.collider) return true;
         return false;
-    }
-
-
-    private void ApplyGravity()
-    {
-        Yvelocity.y += GravityForce * Time.deltaTime;
-        Rigidbody.velocity += Yvelocity * Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

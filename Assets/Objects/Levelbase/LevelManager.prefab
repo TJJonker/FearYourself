@@ -285,7 +285,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2102189799956151711}
-  - component: {fileID: 2102189799956151710}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Level
@@ -310,27 +309,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2102189799956151710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102189799956151705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8599813928107374b8ac87d896e6f7ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 4373026074472513553, guid: 0edf2084fd3618f4388670909c8220b1, type: 3}
-  Ghost: {fileID: 3942423483694051180, guid: 768ca562d7c2d974fba5275e96a6658a, type: 3}
-  StartPoints:
-  - {fileID: 4030350060662261834}
-  DeadOverlay: {fileID: 2102189799141138409}
-  WinFade: {fileID: 2102189799866459584}
-  TVNoise: {fileID: 0}
-  GhostSpawnInterval: 2
-  Increment: 0.03
 --- !u!1 &2102189800868660253
 GameObject:
   m_ObjectHideFlags: 0

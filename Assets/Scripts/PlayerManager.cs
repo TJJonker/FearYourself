@@ -4,26 +4,23 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private LayerMask FinishLayer;
     private GameObject Level;
-    private LevelManager LevelManager;
 
     private const float GROUND_DISTANCE = .2f;
 
-    void Start()
-    {
-        Level = GameObject.FindWithTag("Level");
-        LevelManager = Level.GetComponent<LevelManager>();
-    }
+    void Start() => Level = GameObject.FindWithTag("Level");
 
-    void Update()
+    public bool CheckForFinish()
     {
-        CheckForFinish();        
-    }
-
-    private void CheckForFinish()
-    {
-        var StartPos = new Vector2(transform.position.x, transform.position.y - transform.localScale.y/2f);
-        RaycastHit2D hit = Physics2D.Raycast(StartPos, Vector2.down, GROUND_DISTANCE, FinishLayer);
-        if(hit.collider != null) LevelManager.Finish();
-
+        // Determine start position
+        Vector2 startPos1 = new Vector2(transform.position.x + transform.localScale.x / 2f,
+                                        transform.position.y - transform.localScale.y / 2f);
+        Vector2 startPos2 = new Vector2(transform.position.x - transform.localScale.x / 2f,
+                                        transform.position.y - transform.localScale.y / 2f);
+        // Create two raycasts
+        RaycastHit2D hit1 = Physics2D.Raycast(startPos1, Vector2.down, GROUND_DISTANCE, FinishLayer);
+        RaycastHit2D hit2 = Physics2D.Raycast(startPos2, Vector2.down, GROUND_DISTANCE, FinishLayer);
+        // Return true if ground hit, else false
+        if (hit1.collider || hit2.collider) return true;
+        return false;
     }
 }
