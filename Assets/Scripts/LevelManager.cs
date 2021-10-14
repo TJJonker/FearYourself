@@ -26,16 +26,7 @@ public class LevelManager : MonoBehaviour
 
     // Ghost spawning
     private List<GameObject> ghosts = new List<GameObject>();
-    float GhostSpawnTimer = 0;
-
-
-
-    private void Start()
-    {
-
-
-
-    }
+ 
 
     private void Update()
     {
