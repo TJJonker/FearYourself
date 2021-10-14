@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4373026074472513552}
   - component: {fileID: 4373026074472513647}
   - component: {fileID: 4530351340478449592}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 81952fc3783b8584b90e16d15ec27687, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1

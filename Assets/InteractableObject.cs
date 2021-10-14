@@ -20,6 +20,7 @@ public class InteractableObject : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        // Disable showing E button to enter
         if (collision.gameObject.tag == PlayerTag)
             canvas.GetComponent<UIButton>().Hide();
     }

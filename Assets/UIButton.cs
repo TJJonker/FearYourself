@@ -13,13 +13,24 @@ public class UIButton : MonoBehaviour
     private Color frontImageColor;
     private Color backImageColor;
 
-    [SerializeField] private float maxAlpha;
+    [Range(0, 1)] [SerializeField] private float maxAlpha;
     [SerializeField] private float alphaIncrement;
 
     private void Start()
     {
         frontImage = frontButton.GetComponent<Image>();
         Hide();
+    }
+
+    private IEnumerator Disappear()
+    {
+        frontImageColor = frontImage.color;
+        while (frontImageColor.a > 0)
+        {
+            frontImageColor.a -= alphaIncrement;
+            frontImage.color = frontImageColor;
+            yield return null;
+        }
     }
 
     private IEnumerator Appear()
@@ -29,23 +40,23 @@ public class UIButton : MonoBehaviour
         {
             frontImageColor.a += alphaIncrement;
             frontImage.color = frontImageColor;
-            Debug.Log(frontImageColor.a);
-            yield return new WaitForSeconds(.1f);
+            yield return null;
         }
     }
 
-    public void Hide()
-    {
-        frontButton.GetComponent<Image>().color = new Color(255, 255, 255, 0);
-    }
+    public void Hide() => Disappearing = StartCoroutine(Hde());
     
     // TODO: Add a cache and null check
-    public void Show() => StartCoroutine(Shw());
+    public void Show() => Showing = StartCoroutine(Shw());
+   
+    public IEnumerator Hde()
+    {
+        yield return StartCoroutine(Disappear());
+    }
 
     public IEnumerator Shw()
     {
-        Debug.Log("Started");
         yield return StartCoroutine(Appear());
-        Debug.Log("Stopped");
     }
+    
 }
