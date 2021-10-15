@@ -1,14 +1,30 @@
+using System.Collections;
 using UnityEngine;
 
 public class LevelWinningState : LevelBaseState
 {
-    public override void EnterState(LevelStateManager level)
+    LevelStateManager level = LevelStateManager.current;
+
+    public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        StartCoroutine(CompleteLevel());
     }
 
-    public override void UpdateState(LevelStateManager level)
+    public override void LeaveState()
     {
-        throw new System.NotImplementedException();
     }
+
+    public override void UpdateState()
+    {
+    }
+
+    private IEnumerator CompleteLevel()
+    {
+        level.player.SetActive(false);
+        Overlay.current.SetOpacity(Overlay.Overlays.TVStatic, 0);
+        yield return Overlay.current.StartFadeOut(Overlay.Overlays.TVStatic, level.FadeOutSpeed);
+        yield return Overlay.current.StartFadeOut(Overlay.Overlays.WinFade, level.FadeOutSpeed);
+    }
+
+
 }

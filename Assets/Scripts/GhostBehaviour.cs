@@ -1,80 +1,55 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostBehaviour : MonoBehaviour
 {
-    private TrailRenderer trail;
-    private SpriteRenderer spriteRenderer;
-    public LevelManager levelManager { private get; set; }
-
+    // Necessary
     public List<Vector2> Path { private get; set; }
-
-    private float DestroyTimer = 0;
-    public bool WillDestroy = false;
+    public bool forward;
+    public int speed;
 
     private float positionIndex;
+    private bool willDestroy;
 
-    private int OriginalpositionIndexIncrement = 50;
-    private int positionIndexIncrement;
-
-    public int PositionIndexIncrement
-    {
-        get { return positionIndexIncrement; }
-        // PositionIndexIncrement will gain value, as long as the value is not -1, then it will gain a preset value
-        set { positionIndexIncrement = value == -1 ? OriginalpositionIndexIncrement : value; }
-    }
-
-    public bool Forward { get; set; } = false;
-
-    private void Awake()
-    {
-        PositionIndexIncrement = OriginalpositionIndexIncrement;
-    }
-
-    void Start()
-    {
-        trail = GetComponent<TrailRenderer>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (!Forward) positionIndex = Path.Count;
-
-    }
+    // Determine Start Position
+    void Start() => positionIndex = !forward ? Path.Count : 0;
 
     void Update()
     {
-        if (!WillDestroy) FollowPath();
-        if (WillDestroy) DestroySequence();
+        if (!willDestroy) FollowPath();
     }
 
     private void FollowPath()
     {
-        if (Forward)
+        if (forward)
         {
-            positionIndex += PositionIndexIncrement * Time.deltaTime;
+            positionIndex += speed * Time.deltaTime;
             transform.position = Path[(int)Mathf.Floor(positionIndex)];
-            if ((int)Mathf.Floor(positionIndex) >= Path.Count - 1) DestroyGhost();
+            if ((int)Mathf.Floor(positionIndex) >= Path.Count - 1) StartCoroutine(Destroy());
         }
         else
         {
-            positionIndex -= PositionIndexIncrement * Time.deltaTime;
-            transform.position = Path[(int)Mathf.Floor(positionIndex)];
-            if ((int)Mathf.Ceil(positionIndex) <= 1) DestroyGhost();
+            positionIndex -= speed * Time.deltaTime;
+            Debug.Log(Path.Count);
+            transform.position = Path[(int)Mathf.Ceil(positionIndex)];
+            if ((int)Mathf.Floor(positionIndex) <= 1) StartCoroutine(Destroy());
         }
     }
 
-    private void DestroyGhost()
+    private IEnumerator Destroy()
     {
-        WillDestroy = true;
-        spriteRenderer.color = Color.clear;
-    }
-
-    private void DestroySequence()
-    {
-        DestroyTimer += Time.deltaTime;
-        if (DestroyTimer > trail.time)
-        {
-            levelManager.RemoveGhost(gameObject);
-            Destroy(gameObject);
-        }
+        // Disable movement
+        willDestroy = true;
+        // Make ghost invisible
+        GetComponent<SpriteRenderer>().color = Color.clear;
+        // Disable Hitbox
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        // Trigger GameEvent
+        GameEvents.current.OnGhostDestroy(gameObject);
+        // Wait till trail is gone
+        yield return new WaitForSeconds(GetComponent<TrailRenderer>().time);
+        // Destroy GameObject
+        Destroy(gameObject);
     }
 }

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    Rigidbody2D Rigidbody; 
-    
+    private Rigidbody2D Rigidbody;
+
     public int MovementSpeed { get; private set; } = 4000;
     [SerializeField] private float Drag = .98f;
     [SerializeField] private float jumpheight = 3;
@@ -11,7 +11,8 @@ public class Movement : MonoBehaviour
 
     // GroundCheck variables
     private const float GROUND_DISTANCE = .025f;
-    [SerializeField] LayerMask EnvironmentLayer;
+
+    [SerializeField] private LayerMask EnvironmentLayer;
 
     public bool DeathCollision { get; set; } = false;
 
@@ -19,14 +20,14 @@ public class Movement : MonoBehaviour
 
     // Whether the player can move or not
     public bool CanMove { get; set; } = true;
-    
-    void Start()
+
+    private void Start()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
         GravityForce = Rigidbody.gravityScale * -9.81f;
     }
 
-    void Update()
+    private void Update()
     {
         if (!CanMove) return;
         Move();
@@ -43,7 +44,7 @@ public class Movement : MonoBehaviour
 
     private void Jump()
     {
-        if(IsGrounded() && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {
             var jumpForce = Mathf.Sqrt(jumpheight * -2 * GravityForce);
             Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, jumpForce * Vector2.up.y);
@@ -59,22 +60,17 @@ public class Movement : MonoBehaviour
     private bool IsGrounded()
     {
         // Determine start position
-        Vector2 startPos1 = new Vector2(transform.position.x + transform.localScale.x/2f, 
-                                        transform.position.y - transform.localScale.y/2f);
-        Vector2 startPos2 = new Vector2(transform.position.x - transform.localScale.x/2f,
-                                        transform.position.y - transform.localScale.y/2f);
+        Vector2 startPos1 = new Vector2(transform.position.x + transform.localScale.x / 2f,
+                                        transform.position.y - transform.localScale.y / 2f);
+        Vector2 startPos2 = new Vector2(transform.position.x - transform.localScale.x / 2f,
+                                        transform.position.y - transform.localScale.y / 2f);
         // Create two raycasts
         RaycastHit2D hit1 = Physics2D.Raycast(startPos1, Vector2.down, GROUND_DISTANCE, EnvironmentLayer);
         RaycastHit2D hit2 = Physics2D.Raycast(startPos2, Vector2.down, GROUND_DISTANCE, EnvironmentLayer);
         // Return true if ground hit, else false
-        if(hit1.collider || hit2.collider) return true;
+        if (hit1.collider || hit2.collider) return true;
         return false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Obstacle")
-            DeathCollision = true;
-    }
 
 }

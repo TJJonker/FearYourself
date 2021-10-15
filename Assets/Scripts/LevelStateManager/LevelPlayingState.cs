@@ -4,96 +4,90 @@ using UnityEngine;
 
 public class LevelPlayingState : LevelBaseState
 {
-    // Trail information
-    private List<List<Vector2>> WalkedPaths;
+    // Trail Information
     private const float STEP_INTERVAL = .005f;
-    private int RunNumber;
 
-    // player variables
-    private GameObject player;
-    private PlayerManager playerManager;
+    // Reference to LevelStateManager
+    LevelStateManager level;
 
 
-    public override void EnterState(LevelStateManager level)
+    public override void EnterState()
     {
+        level = LevelStateManager.current;
         // Prepare the WalkedPaths array
-        InstantiateWalkedPaths(level);
+        InstantiateWalkedPaths();
         // Spawn the player in the level
-        SpawnPlayer(level, level.StartPoints[RunNumber].position);
-        StartCoroutine(SpawnPathGhosts(level));
+        level.SpawnPlayer(level.StartPoints[level.RunNumber].position);
+        StartCoroutine(SpawnPathGhosts());
+
+        // Subscribe to event system triggers
+        GameEvents.current.onPlayerDeathColission += Dead;
+        GameEvents.current.onPlayerFinish += Finish;
     }
 
-    public override void UpdateState(LevelStateManager level)
+    public override void UpdateState()
     {
         // Saving player-walked path
         SavePlayerPath();
-        CheckForFinish(level);
+
+        if (Input.GetKeyDown(KeyCode.P)) Dead();
     }
 
-    private void SpawnPlayer(LevelStateManager level, Vector2 position)
+    public override void LeaveState()
     {
-        // Spawn a player if there is none, otherwise move to position
-        if (player == null)
-        {
-            player = Instantiate(level.Player);
-            playerManager = player.GetComponent<PlayerManager>();
-        }
-        // TODO: Change to remove trailrenderer when moved and make it appear afterwards.
-        player.transform.position = position;
+        // What needs to happen before leaving the state
+        GameEvents.current.onPlayerDeathColission -= Dead;
+        GameEvents.current.onPlayerFinish -= Finish;
     }
 
-    private void InstantiateWalkedPaths(LevelStateManager level)
+    private void InstantiateWalkedPaths()
     {
         // Check whether the list is long enough or not
-        if (WalkedPaths.Count >= level.StartPoints.Length) return;
+        if (level.WalkedPaths != null && level.WalkedPaths.Count >= level.StartPoints.Length) return;
         // Instantiate the list
-        WalkedPaths = new List<List<Vector2>>();
+        level.WalkedPaths = new List<List<Vector2>>();
         for (int i = 0; i < level.StartPoints.Length; i++)
-            WalkedPaths.Add(new List<Vector2>());
+            level.WalkedPaths.Add(new List<Vector2>());
     }
 
     // Previous path ghost
     private void SavePlayerPath()
     {
-        var playerPosition = player.transform.position;
-        var lastStepPosition = WalkedPaths[RunNumber][WalkedPaths[RunNumber].Count - 1];
+        var playerPosition = level.player.transform.position;
         // First step or Certain distance
-        if (WalkedPaths[RunNumber].Count < 1 || Vector2.Distance(playerPosition, lastStepPosition) > STEP_INTERVAL)
-            WalkedPaths[RunNumber].Add(player.transform.position);
+        if (level.WalkedPaths[level.RunNumber].Count < 1 
+            || Vector2.Distance(playerPosition, level.WalkedPaths[level.RunNumber][level.WalkedPaths[level.RunNumber].Count - 1]) > STEP_INTERVAL)
+            level.WalkedPaths[level.RunNumber].Add(level.player.transform.position);
     }
 
-    // TODO: Add code when player is hit => Dead()
-
-    private IEnumerator SpawnPathGhosts(LevelStateManager level)
+    private IEnumerator SpawnPathGhosts()
     {
-        while (RunNumber > 0)
+        while (level.RunNumber > 0)
         {
-            for (int i = 0; i < RunNumber; i++)
-                SpawnGhost(level, RunNumber);
+            for (int i = 0; i < level.RunNumber; i++)
+                SpawnGhost(level.RunNumber);
             yield return new WaitForSeconds(level.GhostSpawnInterval);
         }
     }
 
     // Spawn an X amount of ghosts
-    private void SpawnGhost(LevelStateManager level, int runNumber)
+    private void SpawnGhost(int runNumber)
     {
         var ghost = Instantiate(level.Ghost);
-        ghost.GetComponent<GhostBehaviour>().Path = WalkedPaths[runNumber];
-        ghost.GetComponent<GhostBehaviour>().Forward = false;
-        ghost.GetComponent<GhostBehaviour>().levelManager = this;
-        ghosts.Add(ghost);
+        var ghostBehaviour = ghost.GetComponent<GhostBehaviour>();
+        ghostBehaviour.Path = level.WalkedPaths[runNumber];
+        ghostBehaviour.forward = false;
+        ghostBehaviour.speed = level.GhostSpeed;
+        level.ghosts.Add(ghost);
     }
 
-
-    // TODO: Maybe add a listening Pattern?
-    public void CheckForFinish(LevelStateManager level)
+    private void Finish()
     {
-        // Check whether the player touches the finish
-        if (!playerManager.CheckForFinish()) return;
-
-        RunNumber += 1;
-        if (RunNumber < level.StartPoints.Length) 
-            SpawnPlayer(level, level.StartPoints[RunNumber].position);
+        level.RunNumber += 1;
+        if (level.RunNumber < level.StartPoints.Length)
+            level.SpawnPlayer(level.StartPoints[level.RunNumber].position);
         else level.SwitchState(level.WinningState);
     }
+
+    private void Dead() => level.SwitchState(level.DyingState);
 }

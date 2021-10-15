@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class LevelBaseState : MonoBehaviour
 {
-    public abstract void EnterState(LevelStateManager level);
-    public abstract void UpdateState(LevelStateManager level);
+    public abstract void EnterState();
+    public abstract void UpdateState();
+    public abstract void LeaveState();
 }

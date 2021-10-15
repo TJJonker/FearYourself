@@ -1,14 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelStateManager : MonoBehaviour
 {
+    // Singleton pattern
+    public static LevelStateManager current;
+
     // Current state
-    LevelBaseState currentState;
+    private LevelBaseState currentState;
 
     // Finite states
-    [System.NonSerialized] public LevelPlayingState PlayingState = new LevelPlayingState();
-    [System.NonSerialized] public LevelDyingState DyingState = new LevelDyingState();
-    [System.NonSerialized] public LevelWinningState WinningState = new LevelWinningState();
+    [Header("Level States")]
+    [SerializeField] private GameObject StatePlaying;
+
+    [System.NonSerialized] public LevelPlayingState PlayingState;
+    [System.NonSerialized] public LevelWinningState WinningState;
+    [System.NonSerialized] public LevelDyingState DyingState;
 
     [Header("Prefabs")]
     [SerializeField] public GameObject Player;
@@ -19,16 +26,51 @@ public class LevelStateManager : MonoBehaviour
 
     [Header("Ghost Settings")]
     [SerializeField] public int GhostSpawnInterval = 2;
+    [SerializeField] public int GhostSpeed = 50;
+
+    [Header("FadeSettings")]
+    [SerializeField] public float FadeOutSpeed = 0.03f;
+    [SerializeField] public float FadeInSpeed = 0.03f;
+
+    // Private Ghost settings
+    [System.NonSerialized] public List<GameObject> ghosts = new List<GameObject>();
+
+    // Private Player settings
+    [System.NonSerialized] public GameObject player;
+
+    // Private Level settings
+    [System.NonSerialized] public List<List<Vector2>> WalkedPaths;
+    [System.NonSerialized] public int RunNumber;
 
 
+    private void Awake() => current = this;
 
-    private void Start() => SwitchState(PlayingState);
+    private void Start()
+    {
+        PlayingState = StatePlaying.GetComponent<LevelPlayingState>();
+        WinningState = StatePlaying.GetComponent<LevelWinningState>();
+        DyingState = StatePlaying.GetComponent<LevelDyingState>();
 
-    private void Update() => currentState.UpdateState(this);
+        GameEvents.current.onGhostDestroy += RemoveGhost;
+        SwitchState(PlayingState);
+    }
+
+    private void Update() => currentState.UpdateState();
 
     public void SwitchState(LevelBaseState state)
     {
+        if(currentState) currentState.LeaveState();
         currentState = state;
-        currentState.EnterState(this);
+        currentState.EnterState();
+        Debug.Log(currentState);
     }
+    public void SpawnPlayer(Vector2 position)
+    {
+        // Spawn a player if there is none, otherwise move to position
+        if (player == null) player = Instantiate(Player);
+        // TODO: Change to remove trailrenderer when moved and make it appear afterwards.
+        player.transform.position = position;
+    }
+    public void RemoveGhost(GameObject gameObject) 
+        => ghosts.Remove(gameObject);
 }
