@@ -13,10 +13,6 @@ public class LevelStateManager : MonoBehaviour
     [Header("Level States")]
     [SerializeField] private GameObject StatePlaying;
 
-    [System.NonSerialized] public LevelPlayingState PlayingState;
-    [System.NonSerialized] public LevelWinningState WinningState;
-    [System.NonSerialized] public LevelDyingState DyingState;
-
     [Header("Prefabs")]
     [SerializeField] public GameObject Player;
     [SerializeField] public GameObject Ghost;
@@ -31,6 +27,17 @@ public class LevelStateManager : MonoBehaviour
     [Header("FadeSettings")]
     [SerializeField] public float FadeOutSpeed = 0.03f;
     [SerializeField] public float FadeInSpeed = 0.03f;
+
+    [Header("Dying Lightning settings")]
+    [SerializeField] public float TimeToFocusOn = 1;
+    [SerializeField] public float FocusWaitTime = 1;
+    [SerializeField] public float TimeToFocusOff = 1;
+
+    // Level states
+    [System.NonSerialized] public LevelPlayingState PlayingState;
+    [System.NonSerialized] public LevelWinningState WinningState;
+    [System.NonSerialized] public LevelDyingState DyingState;
+    [System.NonSerialized] public LevelPreDeadState PreDyingState;
 
     // Private Ghost settings
     [System.NonSerialized] public List<GameObject> ghosts = new List<GameObject>();
@@ -50,6 +57,7 @@ public class LevelStateManager : MonoBehaviour
         PlayingState = StatePlaying.GetComponent<LevelPlayingState>();
         WinningState = StatePlaying.GetComponent<LevelWinningState>();
         DyingState = StatePlaying.GetComponent<LevelDyingState>();
+        PreDyingState = StatePlaying.GetComponent<LevelPreDeadState>();
 
         GameEvents.current.onGhostDestroy += RemoveGhost;
         SwitchState(PlayingState);
@@ -62,8 +70,8 @@ public class LevelStateManager : MonoBehaviour
         if(currentState) currentState.LeaveState();
         currentState = state;
         currentState.EnterState();
-        Debug.Log(currentState);
     }
+
     public void SpawnPlayer(Vector2 position)
     {
         // Spawn a player if there is none, otherwise move to position
@@ -71,6 +79,7 @@ public class LevelStateManager : MonoBehaviour
         // TODO: Change to remove trailrenderer when moved and make it appear afterwards.
         player.transform.position = position;
     }
+
     public void RemoveGhost(GameObject gameObject) 
         => ghosts.Remove(gameObject);
 }

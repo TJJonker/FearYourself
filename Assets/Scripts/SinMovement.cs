@@ -8,15 +8,12 @@ public class SinMovement : MonoBehaviour
     [SerializeField] private float amplitude;
     [SerializeField] private Vector3 direction;
 
-    private void Start()
-    {
-        position = transform.position;
-    }
+    private void Start() => position = transform.position;
 
     private void Update()
     {
         var sin = Mathf.Sin(sinX) * amplitude;
-        transform.localPosition = position + sin * direction;
+        transform.position = position + sin * direction;
         sinX += sinIncrement;
     }
 }

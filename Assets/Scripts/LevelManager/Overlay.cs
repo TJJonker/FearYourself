@@ -24,7 +24,7 @@ public class Overlay : MonoBehaviour
         overlays.Add(Overlays.Rewind, Rewind);
         overlays.Add(Overlays.WinFade, WinFade);
 
-        routines = new Coroutine[overlays.Count - 1];
+        routines = new Coroutine[overlays.Count];
     }
 
     private Material OverlayToMaterial(Overlays overlay)
@@ -62,10 +62,11 @@ public class Overlay : MonoBehaviour
         var opacity = material.GetFloat(material.shader.GetPropertyName(0));
         while(opacity < maxOpacity)
         {
-            opacity += increment;
+            opacity += increment * Time.deltaTime;
             SetOpacity(material, opacity);
             yield return null;
         }
+        SetOpacity(material, maxOpacity);
     }    
     
     private IEnumerator FadeIn(Overlays overlay, float increment, float minOpacity = 0)
@@ -75,11 +76,10 @@ public class Overlay : MonoBehaviour
         var opacity = material.GetFloat(material.shader.GetPropertyName(0));
         while(opacity > minOpacity)
         {
-            opacity -= increment;
+            opacity -= increment * Time.deltaTime;
             SetOpacity(material, opacity);
             yield return null;
         }
+        SetOpacity(material, minOpacity);
     }
-
-
 }

@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class LevelWinningState : LevelBaseState
 {
-    LevelStateManager level = LevelStateManager.current;
+    LevelStateManager level;
+
+    private void Start() => level = LevelStateManager.current;
 
     public override void EnterState()
     {

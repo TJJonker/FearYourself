@@ -7,7 +7,7 @@ public class GhostBehaviour : MonoBehaviour
     // Necessary
     public List<Vector2> Path { private get; set; }
     public bool forward;
-    public int speed;
+    public int speed { get; set; }
 
     private float positionIndex;
     private bool willDestroy;
@@ -31,8 +31,7 @@ public class GhostBehaviour : MonoBehaviour
         else
         {
             positionIndex -= speed * Time.deltaTime;
-            Debug.Log(Path.Count);
-            transform.position = Path[(int)Mathf.Ceil(positionIndex)];
+            transform.position = Path[(int)Mathf.Ceil(positionIndex - 1)];
             if ((int)Mathf.Floor(positionIndex) <= 1) StartCoroutine(Destroy());
         }
     }
@@ -52,4 +51,6 @@ public class GhostBehaviour : MonoBehaviour
         // Destroy GameObject
         Destroy(gameObject);
     }
+
+    public void Freeze() => speed = 0;
 }

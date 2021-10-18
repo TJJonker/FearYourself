@@ -31,6 +31,7 @@ public class LevelPlayingState : LevelBaseState
         SavePlayerPath();
 
         if (Input.GetKeyDown(KeyCode.P)) Dead();
+        if (Input.GetKeyDown(KeyCode.O)) Winning();
     }
 
     public override void LeaveState()
@@ -38,6 +39,7 @@ public class LevelPlayingState : LevelBaseState
         // What needs to happen before leaving the state
         GameEvents.current.onPlayerDeathColission -= Dead;
         GameEvents.current.onPlayerFinish -= Finish;
+        StopAllCoroutines();
     }
 
     private void InstantiateWalkedPaths()
@@ -62,10 +64,10 @@ public class LevelPlayingState : LevelBaseState
 
     private IEnumerator SpawnPathGhosts()
     {
-        while (level.RunNumber > 0)
+        while (true)
         {
             for (int i = 0; i < level.RunNumber; i++)
-                SpawnGhost(level.RunNumber);
+                SpawnGhost(i);
             yield return new WaitForSeconds(level.GhostSpawnInterval);
         }
     }
@@ -89,5 +91,6 @@ public class LevelPlayingState : LevelBaseState
         else level.SwitchState(level.WinningState);
     }
 
-    private void Dead() => level.SwitchState(level.DyingState);
+    private void Dead() => level.SwitchState(level.PreDyingState);
+    private void Winning() => level.SwitchState(level.WinningState);
 }
