@@ -35,6 +35,7 @@ public class LevelPlayingState : LevelBaseState
 
         // Increase run timer
         level.RunTimer += Time.deltaTime;
+        level.PlayingTime += Time.deltaTime;
     }
 
     public override void LeaveState()

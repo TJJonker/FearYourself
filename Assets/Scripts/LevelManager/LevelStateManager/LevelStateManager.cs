@@ -13,6 +13,7 @@ public class LevelStateManager : MonoBehaviour
 
     [Header("Level settings")]
     [SerializeField] private string Hint;
+    [SerializeField] private int SecondsBeforeHint;
 
     [Header("Finish Settings")]
     [SerializeField] public int SecondsFirstStar;
@@ -30,7 +31,6 @@ public class LevelStateManager : MonoBehaviour
 
     [Header("Start Points")]
     [SerializeField] public Transform[] StartPoints;
-
 
     [Header("Ghost Settings")]
     [SerializeField] public int GhostSpawnInterval = 2;
@@ -66,6 +66,9 @@ public class LevelStateManager : MonoBehaviour
     [System.NonSerialized] public List<List<Vector2>> WalkedPaths;
     [System.NonSerialized] public int RunNumber;
     [System.NonSerialized] public float RunTimer;
+    [System.NonSerialized] public float PlayingTime;
+
+    private bool Hinted;
 
 
     private void Awake() => current = this;
@@ -79,14 +82,13 @@ public class LevelStateManager : MonoBehaviour
 
         GameEvents.current.onGhostDestroy += RemoveGhost;
         SwitchState(PlayingState);
-
-        HintText.WriteLine(Hint, .1f);
     }
 
     private void Update()
     {
         currentState.UpdateState();
         UpdateGUI();
+        TriggerHint();
     }
 
 
@@ -112,5 +114,14 @@ public class LevelStateManager : MonoBehaviour
     {
         RunNumberText.text = RunNumber.ToString() + " / " + StartPoints.Length.ToString();
         TimerText.text = (Mathf.Round(RunTimer * 1000f) / 1000f).ToString();
+    }
+
+    private void TriggerHint()
+    {
+        if (PlayingTime >= SecondsBeforeHint && !Hinted)
+        {
+            HintText.WriteLine(Hint);
+            Hinted = true;
+        }
     }
 }

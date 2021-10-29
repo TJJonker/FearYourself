@@ -4,7 +4,7 @@ using TMPro;
 
 public class TypeWriter : MonoBehaviour
 {
-    public void WriteLine(string text, float letterInterval) => StartCoroutine(TypeWrite(text, letterInterval));
+    public void WriteLine(string text, float letterInterval = .1f) => StartCoroutine(TypeWrite(text, letterInterval));
 
     private IEnumerator TypeWrite(string text, float letterInterval)
     {

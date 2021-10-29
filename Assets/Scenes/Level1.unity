@@ -145,12 +145,20 @@ PrefabInstance:
       value: Try touching the green block!
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
+      propertyPath: HintText
+      value: 
+      objectReference: {fileID: 2067364919}
+    - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsFirstStar
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsThirdStar
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
+      propertyPath: SecondsBeforeHint
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsSecondStar
@@ -1866,8 +1874,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 2
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
