@@ -42,6 +42,8 @@ public class LevelPlayingState : LevelBaseState
         StopAllCoroutines();
     }
 
+
+
     private void InstantiateWalkedPaths()
     {
         // Check whether the list is long enough or not

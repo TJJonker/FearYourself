@@ -24,8 +24,8 @@ public class LevelWinningState : LevelBaseState
     {
         level.player.SetActive(false);
         Overlay.current.SetOpacity(Overlay.Overlays.TVStatic, 0);
-        yield return Overlay.current.StartFadeOut(Overlay.Overlays.TVStatic, level.FadeOutSpeed);
         yield return Overlay.current.StartFadeOut(Overlay.Overlays.WinFade, level.FadeOutSpeed);
+        yield return Overlay.current.StartFadeOut(Overlay.Overlays.TVStatic, level.FadeOutSpeed);
     }
 
 

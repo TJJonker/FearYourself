@@ -8,15 +8,22 @@ public class GameEvents : MonoBehaviour
 
     private void Awake() => current = this;
 
+
+
     // Player touches something hazardous
     public event Action onPlayerDeathColission;
 
     public void OnPlayerDeathColission() => onPlayerDeathColission?.Invoke();
 
+
+
     // Player touches the finish
     public event Action onPlayerFinish;
 
     public void OnPlayerFinish() => onPlayerFinish?.Invoke();
+
+
+
 
     // Ghost gets destroyed
     public event Action<GameObject> onGhostDestroy;
