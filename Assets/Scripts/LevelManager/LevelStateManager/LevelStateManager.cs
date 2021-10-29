@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelStateManager : MonoBehaviour
 {
@@ -10,8 +11,17 @@ public class LevelStateManager : MonoBehaviour
     // Current state
     private LevelBaseState currentState;
 
-    // Finite states
+    [Header("Level settings")]
+    [SerializeField] private string Hint;
+
+    [Header("Finish Settings")]
+    [SerializeField] public int SecondsFirstStar;
+    [SerializeField] public int SecondsSecondStar;
+    [SerializeField] public int SecondsThirdStar;
+
     [Header("Level States")]
+    [Header("LevelManager Settings -----------------------------------------------------------------")]
+    // Finite states
     [SerializeField] private GameObject StatePlaying;
 
     [Header("Prefabs")]
@@ -20,6 +30,7 @@ public class LevelStateManager : MonoBehaviour
 
     [Header("Start Points")]
     [SerializeField] public Transform[] StartPoints;
+
 
     [Header("Ghost Settings")]
     [SerializeField] public int GhostSpawnInterval = 2;
@@ -37,6 +48,7 @@ public class LevelStateManager : MonoBehaviour
     [Header("GUI Settings")]
     [SerializeField] public TextMeshProUGUI RunNumberText;
     [SerializeField] public TextMeshProUGUI TimerText;
+    [SerializeField] public TypeWriter HintText;
 
     // Level states
     [System.NonSerialized] public LevelPlayingState PlayingState;
@@ -67,6 +79,8 @@ public class LevelStateManager : MonoBehaviour
 
         GameEvents.current.onGhostDestroy += RemoveGhost;
         SwitchState(PlayingState);
+
+        HintText.WriteLine(Hint, .1f);
     }
 
     private void Update()
