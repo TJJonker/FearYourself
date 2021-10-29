@@ -6,6 +6,7 @@ public class GhostBehaviour : MonoBehaviour
 {
     // Necessary
     public List<Vector2> Path { private get; set; }
+
     public bool forward;
     public int speed { get; set; }
 
@@ -13,9 +14,9 @@ public class GhostBehaviour : MonoBehaviour
     private bool willDestroy;
 
     // Determine Start Position
-    void Start() => positionIndex = !forward ? Path.Count : 0;
+    private void Start() => positionIndex = !forward ? Path.Count : 0;
 
-    void Update()
+    private void Update()
     {
         if (!willDestroy) FollowPath();
     }
@@ -25,14 +26,22 @@ public class GhostBehaviour : MonoBehaviour
         if (forward)
         {
             positionIndex += speed * Time.deltaTime;
+            if ((int)Mathf.Floor(positionIndex) >= Path.Count - 1)
+            {
+                StartCoroutine(Destroy());
+                return;
+            }
             transform.position = Path[(int)Mathf.Floor(positionIndex)];
-            if ((int)Mathf.Floor(positionIndex) >= Path.Count - 1) StartCoroutine(Destroy());
         }
         else
         {
             positionIndex -= speed * Time.deltaTime;
+            if ((int)Mathf.Floor(positionIndex) <= 1)
+            {
+                StartCoroutine(Destroy());
+                return;
+            }
             transform.position = Path[(int)Mathf.Ceil(positionIndex - 1)];
-            if ((int)Mathf.Floor(positionIndex) <= 1) StartCoroutine(Destroy());
         }
     }
 

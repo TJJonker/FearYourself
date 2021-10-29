@@ -15,7 +15,7 @@ public class LightManager : MonoBehaviour
 
     private void Awake() => current = this;
 
-    public Coroutine FocusOn(Transform pos, float speed, float darkScale = .25f)
+    public Coroutine FocusOn(Transform pos, float speed, float darkScale = .1f)
     {
         if (focus != null) StopCoroutine(focus);
         return focus = StartCoroutine(focusOn(pos, speed, darkScale));
