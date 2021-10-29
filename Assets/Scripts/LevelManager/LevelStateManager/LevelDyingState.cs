@@ -16,6 +16,9 @@ public class LevelDyingState : LevelBaseState
         ReverseGhostPath();
         CreatePlayerGhost();
         ChangeGhostSpeed(DEAD_GHOST_SPEED);
+
+        // Reset RunTimer
+        level.RunTimer = 0;
     }
 
     public override void UpdateState()

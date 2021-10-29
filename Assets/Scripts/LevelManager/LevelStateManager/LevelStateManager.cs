@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LevelStateManager : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class LevelStateManager : MonoBehaviour
     [SerializeField] public float FocusWaitTime = 1;
     [SerializeField] public float TimeToFocusOff = 1;
 
+    [Header("GUI Settings")]
+    [SerializeField] public TextMeshProUGUI RunNumberText;
+    [SerializeField] public TextMeshProUGUI TimerText;
+
     // Level states
     [System.NonSerialized] public LevelPlayingState PlayingState;
     [System.NonSerialized] public LevelWinningState WinningState;
@@ -48,6 +53,7 @@ public class LevelStateManager : MonoBehaviour
     // Private Level settings
     [System.NonSerialized] public List<List<Vector2>> WalkedPaths;
     [System.NonSerialized] public int RunNumber;
+    [System.NonSerialized] public float RunTimer;
 
 
     private void Awake() => current = this;
@@ -63,7 +69,12 @@ public class LevelStateManager : MonoBehaviour
         SwitchState(PlayingState);
     }
 
-    private void Update() => currentState.UpdateState();
+    private void Update()
+    {
+        currentState.UpdateState();
+        UpdateGUI();
+    }
+
 
     public void SwitchState(LevelBaseState state)
     {
@@ -82,4 +93,10 @@ public class LevelStateManager : MonoBehaviour
 
     public void RemoveGhost(GameObject gameObject) 
         => ghosts.Remove(gameObject);
+
+    private void UpdateGUI()
+    {
+        RunNumberText.text = RunNumber.ToString() + " / " + StartPoints.Length.ToString();
+        TimerText.text = (Mathf.Round(RunTimer * 1000f) / 1000f).ToString();
+    }
 }

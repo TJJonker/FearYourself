@@ -32,6 +32,9 @@ public class LevelPlayingState : LevelBaseState
 
         if (Input.GetKeyDown(KeyCode.P)) Dead();
         if (Input.GetKeyDown(KeyCode.O)) Winning();
+
+        // Increase run timer
+        level.RunTimer += Time.deltaTime;
     }
 
     public override void LeaveState()
