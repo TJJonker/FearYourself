@@ -30,7 +30,7 @@ public class LightManager : MonoBehaviour
     // TODO: Make this modular: Make one function that checks whether the intensity is higher or lower
     // and let that function call the Coroutines. 
 
-    private IEnumerator focusOn(Transform pos, float timeToFinish, float darkScale = .25f)
+    private IEnumerator focusOn(Transform pos, float timeToFinish, float darkScale = .1f)
     {
         spotlight.transform.position = pos.position;
         // Collect light data
