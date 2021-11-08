@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &19366815
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
   maxColor: {r: 0.7372549, g: 0.7372549, b: 0.7372549, a: 0.70980394}
-  speed: 0
+  speed: 3
 --- !u!1 &1664457907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,7 +1842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607845, g: 0.19607845, b: 0.19607845, a: 1}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2593,7 +2593,7 @@ MonoBehaviour:
   RunNumberText: {fileID: 857051613}
   TimerText: {fileID: 1131998296}
   HintText: {fileID: 2067364919}
-  WinningStateGUI: {fileID: 19366814}
+  WinningStateGUI: {fileID: 8918370051436867040}
 --- !u!1 &2102189800868660253
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelWinningState : LevelBaseState
 {
@@ -19,6 +20,7 @@ public class LevelWinningState : LevelBaseState
 
     public override void UpdateState()
     {
+        if (Input.anyKeyDown) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private IEnumerator CompleteLevel()
