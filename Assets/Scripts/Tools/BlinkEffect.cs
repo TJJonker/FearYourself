@@ -17,7 +17,7 @@ public class BlinkEffect : MonoBehaviour
     {
         var Delta = minColor - maxColor;
 
-        var color = Mathf.Sin(sinX) * (Delta / 2) + minColor - (Delta / 2);
+        var color = Mathf.Sin(sinX + Mathf.PI/2) * (Delta / 2) + minColor - (Delta / 2);
         tmpro.color = color;
 
         sinX += speed * Time.deltaTime;

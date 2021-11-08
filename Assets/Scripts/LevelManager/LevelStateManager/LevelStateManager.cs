@@ -49,6 +49,7 @@ public class LevelStateManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI RunNumberText;
     [SerializeField] public TextMeshProUGUI TimerText;
     [SerializeField] public TypeWriter HintText;
+    [SerializeField] public LevelCompleted WinningStateGUI;
 
     // Level states
     [System.NonSerialized] public LevelPlayingState PlayingState;
