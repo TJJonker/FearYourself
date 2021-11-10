@@ -4,7 +4,7 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody2D Rigidbody;
 
-    public int MovementSpeed { get; private set; } = 4000;
+    [SerializeField] private int MovementSpeed = 1000;
     [SerializeField] private float Drag = .98f;
     [SerializeField] private float jumpheight = 3;
     private float GravityForce;
@@ -16,10 +16,14 @@ public class Movement : MonoBehaviour
 
     public bool DeathCollision { get; set; } = false;
 
-    private Vector2 Yvelocity;
 
     // Whether the player can move or not
     public bool CanMove { get; set; } = true;
+
+    // input variables
+    private float horizontalMovement;
+    private bool jumpKeyPressed;
+
 
     private void Start()
     {
@@ -31,14 +35,14 @@ public class Movement : MonoBehaviour
     {
         if (!CanMove) return;
         Move();
-        ApplyVerticalDrag();
         Jump();
+        ApplyVerticalDrag();
     }
 
     private void Move()
     {
-        var XMovement = Input.GetAxisRaw("Horizontal");
-        var Movement = new Vector2(XMovement, 0);
+        horizontalMovement = Input.GetAxisRaw("Horizontal");
+        var Movement = new Vector2(horizontalMovement, 0);
         Rigidbody.AddForce(Movement * MovementSpeed * Time.deltaTime);
     }
 

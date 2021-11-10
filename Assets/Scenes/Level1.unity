@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 19366814, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
+      propertyPath: SecondsBeforeHint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: StartPoints.Array.data[0]
       value: 
