@@ -58,7 +58,7 @@ public class Movement : MonoBehaviour
     private void ApplyVerticalDrag()
     {
         var velocity = Rigidbody.velocity;
-        Rigidbody.velocity = new Vector2(velocity.x * Drag, Rigidbody.velocity.y);
+        Rigidbody.velocity = new Vector2(velocity.x * Drag * Time.deltaTime, Rigidbody.velocity.y);
     }
 
     private bool IsGrounded()
