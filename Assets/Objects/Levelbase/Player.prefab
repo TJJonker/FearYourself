@@ -146,8 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33607dc1ccdbf48499d7536050a724f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slippy: {fileID: 6200000, guid: 81952fc3783b8584b90e16d15ec27687, type: 2}
   MovementSpeed: 20000
-  Drag: 0.98
+  Drag: 0.99
   jumpheight: 2.5
   EnvironmentLayer:
     serializedVersion: 2

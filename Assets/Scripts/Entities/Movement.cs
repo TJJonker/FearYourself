@@ -4,6 +4,8 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody2D Rigidbody;
 
+    [SerializeField] private PhysicsMaterial2D slippy;
+
     [SerializeField] private int MovementSpeed = 1000;
     [SerializeField] private float Drag = .98f;
     [SerializeField] private float jumpheight = 3;
@@ -37,6 +39,19 @@ public class Movement : MonoBehaviour
         Move();
         Jump();
         ApplyVerticalDrag();
+        MakeSlippy();
+    }
+
+    private void MakeSlippy()
+    {
+        if (!IsGrounded())
+        {
+            Rigidbody.sharedMaterial = slippy;
+        }
+        else
+        {
+            Rigidbody.sharedMaterial = null;
+        }
     }
 
     private void Move()

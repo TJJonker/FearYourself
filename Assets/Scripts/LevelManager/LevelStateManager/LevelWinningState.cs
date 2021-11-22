@@ -20,6 +20,11 @@ public class LevelWinningState : LevelBaseState
 
     public override void UpdateState()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            return;
+        }
         if (Input.anyKeyDown) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

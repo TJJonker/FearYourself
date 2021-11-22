@@ -162,11 +162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsFirstStar
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsThirdStar
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsBeforeHint
@@ -174,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: SecondsSecondStar
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2102189799624932029, guid: 6ad7fc19ba047734a8fcefddfe4e3d44, type: 3}
       propertyPath: StartPoints.Array.size
